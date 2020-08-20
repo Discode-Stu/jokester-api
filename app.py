@@ -26,7 +26,7 @@ class Joke(db.Model):
 
 class JokeSchema(ma.Schema):
     class Meta:
-        fields = ('title', 'content')
+        fields = ('id','title', 'content')
 
 
 joke_schema = JokeSchema()
