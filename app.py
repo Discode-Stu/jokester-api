@@ -36,7 +36,6 @@ jokes_schema = JokeSchema(many=True)
 # Endpoint to create a new joke
 @app.route('/joke', methods=["POST"])
 def add_joke():
-    # id = request.json['_id']
     title = request.json['title']
     content = request.json['content']
 
@@ -69,7 +68,6 @@ def get_joke(id):
 @app.route("/joke/<id>", methods=["PUT"])
 def joke_update(id):
     joke = Joke.query.get(id)
-    # id = request.json['_id']
     title = request.json['title']
     content = request.json['content']
 
