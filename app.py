@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS
 import os
-import bcrypt
+# import bcrypt
 
 app = Flask(__name__) 
 CORS(app)
@@ -19,7 +19,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
-# SQLAlchemy.create_all() 
 
 class Joke(db.Model):
     id = db.Column(db.Integer, primary_key=True)
