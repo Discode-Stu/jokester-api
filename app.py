@@ -9,7 +9,6 @@ import os
 from flask_bcrypt import Bcrypt
 
 
-
 app = Flask(__name__) 
 bcrypt = Bcrypt(app)
 CORS(app)
@@ -236,5 +235,6 @@ def user_delete(id):
 
 
 if __name__ == '__main__' :
-    # manager.run()
-     app.run(debug=True)
+    
+    app.run(debug=True)
+    manager.run()
