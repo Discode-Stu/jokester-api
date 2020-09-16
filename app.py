@@ -12,7 +12,7 @@ from flask_bcrypt import Bcrypt
 
 app = Flask(__name__) 
 bcrypt = Bcrypt(app)
-CORS(app)
+CORS(app, supports_credentials=True)
 # @app.route('/')
 # def hello():
 #     return "Hey Flask"
