@@ -9,8 +9,16 @@ from flask_bcrypt import Bcrypt
 
 
 app = Flask(__name__) 
+
 bcrypt = Bcrypt(app)
-CORS(app)
+
+CORS(app, resources={
+    r"/*": {
+        "origins": "*"
+    }
+})
+
+
 # @app.route('/')
 # def hello():
 #     return "Hey Flask"
