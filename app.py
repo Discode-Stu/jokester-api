@@ -2,10 +2,16 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
 import os
 # import bcrypt
+from flask_bcrypt import Bcrypt
+
+
 
 app = Flask(__name__) 
+bcrypt = Bcrypt(app)
 CORS(app)
 # @app.route('/')
 # def hello():
@@ -14,10 +20,14 @@ basedir = os.path.abspath(__file__)
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
-#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
+
+migrate = Migrate(app, db, compare_type=True)
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
 
 
 class Joke(db.Model):
@@ -99,7 +109,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=False)
     email = db.Column(db.String(200), unique=True)
-    password = db.Column(db.String(100), unique=False)
+    password = db.Column(db.Text)
+
 
     def __init__(self, name, email, password):
         self.name = name
@@ -116,20 +127,67 @@ users_schema = UserSchema(many=True)
 
 
 # Endpoint to create a new user
-@app.route('/user', methods=["POST"])
-def add_user():
-    name = request.json['name']
-    email = request.json['email']
-    password = request.json['password']
+# @app.route('/user', methods=["POST"])
+# def add_user():
+#     name = request.json['name']
+#     email = request.json['email']
+#     password = request.json['password']
 
-    new_user = User(name, email, password)
+#     new_user = User(name, email, password)
 
-    db.session.add(new_user)
+#     db.session.add(new_user)
+#     db.session.commit()
+
+#     user = User.query.get(new_user.id)
+
+#     return user_schema.jsonify(user)
+
+#endpoint to register user
+@app.route('/register', methods=["POST"])
+def register():
+    name = request.json.get('name', None)
+    email = request.json.get('email', None)
+    passwordToHash = request.json.get('passwordToHash', None)
+
+    if not name:
+        return "Missing Name!", 400
+    if not email:
+        return "Missing Email!", 400
+    if not passwordToHash:
+        return "Missing Password!", 400
+
+    hashed = bcrypt.generate_password_hash(passwordToHash).decode('utf-8')
+
+    user = User(email=email, name=name, password=hashed)
+    db.session.add(user)
     db.session.commit()
 
-    user = User.query.get(new_user.id)
+    return f"Welcome {email}"
 
-    return user_schema.jsonify(user)
+
+#endpoint to login user
+@app.route('/login', methods=["POST"])
+def login():
+    email = request.json.get('email', None)
+    passwordToHash = request.json.get('passwordToHash', None)
+
+    if not email:
+        return "Missing Email!", 400
+    if not passwordToHash:
+        return "Missing Password!", 400
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        return "User Not Found!", 404
+
+    candidate = user.password
+
+    if bcrypt.check_password_hash(candidate, passwordToHash):
+
+        return f"Welcome back {email}"
+    else:
+        return "Wrong Password!"
 
 
 # Endpoint to query all users
@@ -176,4 +234,5 @@ def user_delete(id):
 
 
 if __name__ == '__main__' :
-    app.run(debug=True)
+    # manager.run()
+     app.run(debug=True)
