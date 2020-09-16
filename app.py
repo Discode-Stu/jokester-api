@@ -12,7 +12,7 @@ from flask_bcrypt import Bcrypt
 
 app = Flask(__name__) 
 bcrypt = Bcrypt(app)
-CORS(app, supports_credentials=True, send_wildcard=False)
+CORS(app)
 # @app.route('/')
 # def hello():
 #     return "Hey Flask"
@@ -144,6 +144,7 @@ users_schema = UserSchema(many=True)
 
 #endpoint to register user
 @app.route('/register', methods=["POST"])
+@cross_origin(supports_credentials=True)
 def register():
     name = request.json.get('name', None)
     email = request.json.get('email', None)
@@ -167,6 +168,7 @@ def register():
 
 #endpoint to login user
 @app.route('/login', methods=["POST"])
+@cross_origin(supports_credentials=True)
 def login():
     email = request.json.get('email', None)
     passwordToHash = request.json.get('passwordToHash', None)
