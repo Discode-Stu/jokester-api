@@ -5,7 +5,6 @@ from flask_cors import CORS, cross_origin
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 import os
-# import bcrypt
 from flask_bcrypt import Bcrypt
 
 
