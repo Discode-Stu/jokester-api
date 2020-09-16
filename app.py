@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 import os
@@ -127,20 +127,20 @@ users_schema = UserSchema(many=True)
 
 
 # Endpoint to create a new user
-# @app.route('/user', methods=["POST"])
-# def add_user():
-#     name = request.json['name']
-#     email = request.json['email']
-#     password = request.json['password']
+@app.route('/user', methods=["POST"])
+def add_user():
+    name = request.json['name']
+    email = request.json['email']
+    password = request.json['password']
 
-#     new_user = User(name, email, password)
+    new_user = User(name, email, password)
 
-#     db.session.add(new_user)
-#     db.session.commit()
+    db.session.add(new_user)
+    db.session.commit()
 
-#     user = User.query.get(new_user.id)
+    user = User.query.get(new_user.id)
 
-#     return user_schema.jsonify(user)
+    return user_schema.jsonify(user)
 
 #endpoint to register user
 @app.route('/register', methods=["POST"])
