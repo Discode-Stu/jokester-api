@@ -9,7 +9,6 @@ verify_ssl = true
 flask = "*"
 flask-script = "*"
 flask-migrate = "*"
-flask-bcrypt = "*"
 flask-sqlalchemy = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
@@ -17,6 +16,9 @@ psycopg2-binary = "*"
 gunicorn = "*"
 python-dotenv = "*"
 flask-cors = "*"
+mysql = "*"
+flask-bcrypt = "*"
+bcrypt = "*"
 
 [requires]
 python_version = "3.7"
