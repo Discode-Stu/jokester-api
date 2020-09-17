@@ -1,33 +1,26 @@
 from flask import Flask, request, jsonify
-
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS, cross_origin
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-import os
-
 import bcrypt
 from flask_bcrypt import Bcrypt
-
-# from flask.ext.bcrypt import Bcrypt
+import os
 
 
 app = Flask(__name__) 
 
 bcrypt = Bcrypt(app)
 
-CORS(app)
-# , resources={
-#     r"/*": {
-#         "origins": "*"
-#     }
-# })
+CORS(app
+, resources={
+    r"/*": {
+        "origins": "*"
+    }
+})
 
 
-# @app.route('/')
-# def hello():
-#     return "Hey Flask"
 basedir = os.path.abspath(__file__)
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
@@ -253,4 +246,4 @@ def user_delete(id):
 if __name__ == '__main__' :
     
     app.run(debug=True)
-    # manager.run()
+    manager.run()

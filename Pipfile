@@ -17,8 +17,8 @@ gunicorn = "*"
 python-dotenv = "*"
 flask-cors = "*"
 mysql = "*"
-flask-bcrypt = "*"
 bcrypt = "*"
+flask-bcrypt = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8.5"
