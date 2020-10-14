@@ -20,6 +20,8 @@ mysql = "*"
 bcrypt = "*"
 flask-bcrypt = "*"
 flask-login = "*"
+flask-security = "*"
+pyjwt = "*"
 
 [requires]
 python_version = "3.8.5"
